@@ -1,6 +1,26 @@
 https://github.com/Fredplusplus10/caso_final_integrador_3.git
 # caso_final_integrador_3
 
+
+## CORRECIÓN DE ERRORES IGNACIO DE ROJAS IZQUIERDO ## 
+Incoherencia en el archivo main.h:
+
+1) No se ha incluido el archivo main.h, pero tampoco se utiliza ninguna función o declaración que pertenezca a ese archivo. Esto puede ser un error si el archivo tiene código necesario.
+Falta de liberación de recursos (delete consoleBox):
+
+2) La instancia global ConsoleBox* consoleBox no se libera correctamente, lo que puede llevar a una fuga de memoria.
+Peligro de desbordamiento en filename:
+
+3) Aunque se utiliza cin.getline, no hay garantía de que el tamaño del archivo no exceda el límite de 500 caracteres.
+Uso incorrecto de fread:
+
+4) La asignación buffer[bytes_read] = '\0'; puede generar errores si bytes_read alcanza el tamaño del búfer, ya que intentaría acceder fuera del rango.
+Uso excesivo de using namespace std:
+
+5) Es buena práctica evitar using namespace std en código global para prevenir conflictos de nombres.
+
+
+
 Trabajos prácticos
 1. Carga de scripts en tiny-lisp
 El módulo Labmain.cpp define la función load_script(), que se utiliza para cargar un script en la memoria y aplicarle la coloración sintáctica. Esta función se basa en la librería estándar de C.
