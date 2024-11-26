@@ -1,9 +1,9 @@
-//
 // Created by JA24U on 25/11/2024.
 //
 #include <iostream>
 #include <string>
 #include <cstdio>
+#include <memory> // Para usar punteros inteligentes
 
 using namespace std;
 
@@ -15,28 +15,31 @@ struct ColorConsole {
 struct ConsoleBox {
     void new_text() {
         // Implementación de la función new_text
+        cout << "[ConsoleBox] Preparando para mostrar texto..." << endl;
     }
-    void set_text(const string &text) {
-        cout << text << endl;
+    void set_text(const string& text) {
+        cout << "[ConsoleBox] Texto: " << endl << text << endl;
     }
 };
 
-ConsoleBox *consoleBox = new ConsoleBox; // Suponemos que ya está inicializado
+// Usar un puntero inteligente para evitar fugas de memoria
+unique_ptr<ConsoleBox> consoleBox = make_unique<ConsoleBox>();
 
-void load_script(const char* filename, bool show_script = false) {
+void load_script(const string& filename, bool show_script = false) {
     string script;
     FILE* f = nullptr;
+
     try {
-        f = fopen(filename, "rb");
+        f = fopen(filename.c_str(), "rb");
         if (!f) {
             cerr << "Error de apertura de " << filename << endl;
             return;
         }
 
-        int c;
         char buf[4001];
+        size_t c;
         while ((c = fread(buf, 1, 4000, f)) > 0) {
-            buf[c] = 0;
+            buf[c] = '\0'; // Agregar carácter nulo al final del buffer
             script.append(buf);
         }
         fclose(f);
@@ -44,10 +47,12 @@ void load_script(const char* filename, bool show_script = false) {
 
         if (show_script) {
             cout << ColorConsole::fg_blue << ColorConsole::bg_white;
-            cout << script << endl;
+            cout << script << "\033[0m" << endl; // Restablecer formato
         }
+
         consoleBox->new_text();
         consoleBox->set_text(script);
+
     } catch (...) {
         cerr << "Error durante la lectura del archivo" << endl;
         if (f) fclose(f);
@@ -55,9 +60,9 @@ void load_script(const char* filename, bool show_script = false) {
 }
 
 void load_script() {
-    char filename[500];
-    printf("Archivo: ");
-    scanf("%499s", filename);
+    string filename;
+    cout << "Archivo: ";
+    getline(cin, filename); // Leer el nombre del archivo sin riesgo de desbordamiento
     load_script(filename, true);
 }
 
