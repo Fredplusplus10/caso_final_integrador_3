@@ -19,6 +19,26 @@ Uso excesivo de using namespace std:
 
 5) Es buena práctica evitar using namespace std en código global para prevenir conflictos de nombres.
 
+## CAMBIOS REALIZADOS ##
+Eliminado main.h:
+No era necesario incluirlo.
+
+Liberación de memoria:
+Se agregó delete consoleBox en main() para evitar fugas de memoria.
+
+Evitar desbordamientos:
+Se usó std::getline en lugar de cin.getline.
+
+Evitar errores de rango en buffer:
+Se eliminó buffer[bytes_read] = '\0' y se reemplazó con script.append(buffer, bytes_read).
+
+Corrección de using namespace std:
+Se reemplazó con using específico de los elementos necesarios.
+
+Comportamiento Esperado:
+Este código corregido evita errores comunes, es seguro contra fugas de memoria y está más alineado con las buenas prácticas de C++. Asegúrate de probarlo con diferentes archivos para verificar su robustez.
+
+
 
 
 Trabajos prácticos
